@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SecurityController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .form-control{
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .error{
+        color:red;
+    }
+
+</style>
+
+<div class="example-wrapper">
+   <div class="container">
+       <div class="row">
+           <div class="col">
+               <a href="{{ path('logout') }}">Logout</a>
+               <form  method="POST" action="{{ path('login') }}">
+                   {% if error %}
+                       <div class="error">{{ error.messagekey }}</div>
+                   {% endif %}
+                   <div class="from-group">
+                       <input type="text" value="{{ lastUsername }}" name="_username" class="form-control" placeholder="Username">
+
+                   </div>
+                   <div class="from-group" >
+
+                       <input type="password" name="_password" class="form-control" placeholder="Password">
+                   </div>
+
+                     <input type="submit" name="Login" value="Login" class="btn btn-primary">
+
+               </form>
+           </div>
+       </div>
+   </div>
+
+
+
+
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+{% endblock %}
