@@ -8,7 +8,7 @@ Download from here [QA](https://cbikas.com.np/).
 
 
 ## ERD OF PROJECT
-![alt text](erd.png)
+![alt text](erd.PNG)
 
 
 ## License
