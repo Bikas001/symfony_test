@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */

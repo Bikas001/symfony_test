@@ -1,7 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <style>
+        .form-bac{
+            background: azure;
+            padding: 20px;
+        }
+    </style>
+    <br>
 
-    {{ form(form) }}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4>Question Form: </h4>
+                <div class="form-bac">
+                    {{ form(form) }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}

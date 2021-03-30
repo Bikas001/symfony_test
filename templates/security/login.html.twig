@@ -33,6 +33,8 @@
 
                        <input type="password" name="_password" class="form-control" placeholder="Password">
                    </div>
+{#                   <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">#}
+{#                   <input type="hidden" name="_target_path" value="{{ app.request.get('redirect-to') }}">#}
 
                      <input type="submit" name="Login" value="Login" class="btn btn-primary">
 

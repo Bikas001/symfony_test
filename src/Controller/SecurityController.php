@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Controller;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use App\Entity\User;
+use App\Form\SignupType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,8 +14,11 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="login")
+     * @param Request $request
+     * @param AuthenticationUtils $utils
+     * @return Response
      */
-    public function login(Request $request, AuthenticationUtils $utils)
+    public function login(Request $request, AuthenticationUtils $utils): Response
     {
         $error = $utils->getLastAuthenticationError();
         $lastUsername= $utils->getLastUsername();
@@ -29,5 +34,26 @@ class SecurityController extends AbstractController
      */
     public function logout(){
 
+    }
+
+    /**
+     * @Route ("/signin",name="signin")
+     * @param Request $request
+     * @return Response
+     */
+    public function signup(Request $request): Response
+    {
+        $user=new User();
+        $form=$this->createForm(SignupType::class,$user);
+        $em=$this->getDoctrine()->getManager();
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            $em->persist($user);
+            $em->flush();
+        }
+
+        return $this->render('security/signup.html.twig',[
+            'form'=>$form
+        ]);
     }
 }

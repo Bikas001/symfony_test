@@ -2,24 +2,46 @@
 
 {% block title %}Hello CategoryController!{% endblock %}
 
+
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+ <div class="container">
+     <nav aria-label="breadcrumb">
+         <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="/">Home</a></li>
+             <li class="breadcrumb-item"><a href="{{ path('categorycategory') }}">Category</a></li>
+             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                 <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('categorycreate') }}">Add Category</a></li>
+             {% endif %}
+         </ol>
+     </nav>
+ </div>
 
 <div class="example-wrapper">
-    {# read and display just one flash message type #}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
+{#    #}{# read and display just one flash message type #}
+{#    {% for message in app.flashes('success') %}#}
+{#        <div class="alert alert-success">#}
+{#            {{ message }}#}
+{#        </div>#}
+{#    {% endfor %}#}
+
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Categories List: </h2>
+                <ul class="list-group"></ul>
+                {% for category in categories %}
+
+                    <li class="list-group-item"> {{ category.name }} <br><a href="{{ path('categoryedit',{'id': category.id}) }}">Edit</a>
+
+                        | <a href="{{ path('categorydelete', {'id':category.id}) }}" class="text-danger">Delete</a>
+                    </li>
+                {% endfor %}
+            </div>
         </div>
-    {% endfor %}
+    </div>
     <ul>
 
-        {% for category in categories %}
-          <li> {{ category.name }}</li>
-        {% endfor %}
     </ul>
 </div>
 {% endblock %}

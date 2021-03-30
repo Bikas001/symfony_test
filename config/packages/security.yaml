@@ -18,6 +18,10 @@ security:
                 login_path: login
                 check_path: login
                 provider: my_provider
+#                csrf_token_generator: security.csrf.token_manager
+#                failur_path:
+#                defult_target_path: questionquestion
+
             logout:
                 path: /logout
                 target: /
@@ -27,5 +31,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/admin, roles: IS_AUTHENICATED_ANONYMOUSLY }
-         - { path: ^/category/, roles: ROLE_USER }
+#         - { path: ^/admin, roles: IS_AUTHENICATED_ANONYMOUSLY }
+#         - { path: ^/category, roles: ROLE_USER }
+#         - { path: ^/question, roles: ROLE_USER }
+

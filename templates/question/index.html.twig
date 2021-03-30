@@ -1,19 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello QuestionController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('questionquestion') }}">Question</a></li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('questioncreate') }}">Add Question</a></li>
+                {% endif %}
+            </ol>
+    </div>
 
-<div class="example-wrapper">
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="col">
+                {% for question in questions %}
 
-    <ul>
-        {% for question in questions %}
-          <li>{{"Question: " ~ question.askquestion ~ " Category " ~ question.category ~ " Asked By " ~ question.user }}</li>
-        {% endfor %}
-    </ul>
+                    <div class="card" style="">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ question.category}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ question.user }}</h6>
+                            <p class="card-text"> {{ question.askquestion }}</p>
+
+                            <a href="#" class="card-link">Edit</a>
+                            <a href="#" class="card-link text-danger">Delete</a>
+                            <h5 class="text-primary">reply: </h5>
+                            {% for reply in question.reply %}
+                                <p style="margin-left: 20px;">{{ reply.replytext }}</p>
+                            {% endfor %}
+
+
+
+                        </div>
+                    </div>
+                    <br>
+
+                {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

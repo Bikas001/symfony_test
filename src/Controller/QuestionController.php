@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Question;
+use App\Entity\Reply;
 use App\Form\QuestionType;
 use App\Repository\QuestionRepository;
+use App\Repository\ReplyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,13 +26,24 @@ class QuestionController extends AbstractController
     {
         $question=$questionRepository->findAll();
 
+
+
         return $this->render('question/index.html.twig', [
             'questions'=>$question
         ]);
     }
 
+//    /**
+//     * @Route(/{id})
+//     * @param $id
+//     */
+//    public function reply($id,QuestionRepository $questionRepository){
+//
+//    }
+
     /**
-     * @Route("/question/create",name="create")
+     * @Route("/create",name="create")
+     * @Route("/{$id}/create", name="create")
      * @param Request $request
      * @return Response
      */
@@ -41,12 +54,12 @@ class QuestionController extends AbstractController
         $form=$this->createForm(QuestionType::class,$question);
         $em= $this->getDoctrine()->getManager();
         $form->handleRequest($request);
+
+
         if($form->isSubmitted()){
             $em->persist($question);
             $em->flush();
         }
-
-
         return $this->render('question/create_question.html.twig',
             [
                 'form'=>$form->createView()

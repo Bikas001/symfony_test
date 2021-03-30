@@ -36,29 +36,40 @@ class CategoryController extends AbstractController
      */
     public function create(Request $request): Response
     {
+        $category=new Category();
 
-        $category = new Category();
 
         $form=$this->createForm(CategoryType::class, $category);
         $em= $this->getDoctrine()->getManager();
 
         $form->handleRequest($request);
-        if($form->isSubmitted()){
-            $data=$category->getDate();
+        if($form->isSubmitted() && $form->isValid()){
+            $data=$category;
             $em->persist($category);
             $em->flush();
         }
-
-
-
         return $this->render('category/add_category.html.twig',['form'=>$form->createView()]);
 
     }
 
-    protected function edit(Category $category,EntityManager $em,Request $request)
+    /**
+     * @Route ("/edit/{id}", name="edit")
+     * @param Category $category
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(Category $category,Request $request): Response
     {
-        $form=$this->createForm(CategoryType::class,$category);
+        $form=$this->createForm(CategoryType::class, $category);
+        $em= $this->getDoctrine()->getManager();
 
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $data=$category;
+            $em->persist($category);
+            $em->flush();
+        }
+        return $this->render('category/add_category.html.twig',['form'=>$form->createView()]);
     }
 
     /**
