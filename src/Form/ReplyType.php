@@ -14,7 +14,6 @@ class ReplyType extends AbstractType
     {
         $builder
             ->add('replytext')
-            ->add('question')
             ->add('Reply', SubmitType::class)
         ;
     }

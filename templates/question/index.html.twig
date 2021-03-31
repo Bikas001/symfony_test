@@ -28,6 +28,8 @@
 
                             <a href="{{ path('questionedit', {'id':question.id}) }}" class="card-link">Edit</a>
                             <a href="{{ path('questiondelete', {'id':question.id}) }}" class="card-link text-danger">Delete</a>
+                            <a href="{{ path('questionshow', {'id':question.id}) }}" class="card-link text-dark">Show</a>
+                           
                             <h5 class="text-primary">reply: </h5>
                             {% for reply in question.reply %}
                                 <p style="margin-left: 20px;">{{ reply.replytext }}</p>

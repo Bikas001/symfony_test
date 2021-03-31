@@ -23,6 +23,8 @@ class Reply
      */
     private $question;
 
+
+
     /**
      * @ORM\Column(type="text")
      */

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Question;
 use App\Entity\Reply;
 use App\Form\QuestionType;
+use App\Form\ReplyType;
 use App\Repository\QuestionRepository;
 use App\Repository\ReplyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,9 +26,6 @@ class QuestionController extends AbstractController
     public function index(QuestionRepository $questionRepository): Response
     {
         $question=$questionRepository->findAll();
-
-
-
         return $this->render('question/index.html.twig', [
             'questions'=>$question
         ]);
@@ -102,9 +100,6 @@ class QuestionController extends AbstractController
         $user=$this->getUser();
         $em=$this->getDoctrine()->getManager();
         $userid=$question->getUser();
-
-
-
         if($user==$question->getUser()){
             $em->remove($question);
             $em->flush();
@@ -112,5 +107,30 @@ class QuestionController extends AbstractController
         }else{
             return $this->redirect('/question', Response::HTTP_BAD_REQUEST);
         }
+    }
+
+
+    /**
+     * @Route ("/show/{id}",name="show")
+     *
+     */
+    public function show(Question $question,Request $request){
+        $reply=new Reply();
+        $reply->setQuestion($question);
+        $form=$this->createForm(ReplyType::class,$reply);
+
+        $em=$this->getDoctrine()->getManager();
+
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            $em->persist($reply);
+            $em->flush();
+        }
+
+        return $this->render('question/show.html.twig',[
+            'question'=>$question,
+            'form'=>$form->createView()
+        ]);
+
     }
 }
