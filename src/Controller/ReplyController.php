@@ -36,14 +36,10 @@ class ReplyController extends AbstractController
 
 
     /**
-     * @Route ("/{id}", name="deletereply",methods={"GET","HEAD"})
+     * @Route ("/reply/{id}", name="deletereply")
      */
-        public function delete(Request $request, Reply $reply){
-            if ($this->isCsrfTokenValid('delete'.$reply->getId(), $request->request->get('_token'))) {
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($reply);
-                $em->flush();
-            }
+        public function delete(Request $request):Response{
+           return $this->redirect('/');
     }
 
 

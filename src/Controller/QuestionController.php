@@ -51,6 +51,8 @@ class QuestionController extends AbstractController
     public function create(Request $request)
     {
         $question=new Question();
+        $user=$this->getUser();
+        $question->setUser($user);
         $form=$this->createForm(QuestionType::class,$question);
         $em= $this->getDoctrine()->getManager();
         $form->handleRequest($request);
@@ -59,11 +61,56 @@ class QuestionController extends AbstractController
         if($form->isSubmitted()){
             $em->persist($question);
             $em->flush();
+
+            return $this->redirect('/question');
         }
         return $this->render('question/create_question.html.twig',
             [
                 'form'=>$form->createView()
             ]
         );
+    }
+
+    /**
+     * @Route ("/edit/{id}",name="edit")
+     * @param Request $request
+     * @param Question $question
+     */
+    public function edit(Request $request,Question $question){
+        $form=$this->createForm(QuestionType::class,$question);
+        $form->handleRequest($request);
+        $user=$this->getUser();
+        $question->setUser($user);
+        $entitymanager=$this->getDoctrine()->getManager();
+        if($form->isSubmitted() && $form->isValid()){
+            $entitymanager->persist($question);
+            $entitymanager->flush();
+            return $this->redirect('/question');
+
+        }
+        return $this->render('question/create_question.html.twig',[
+            'form'=>$form->createView()
+        ]);
+    }
+
+    /**
+     * @Route ("delete/{id}",name="delete")
+     * @param Request $request
+     * @param Question $question
+     */
+    public function delete(Request $request,Question $question,QuestionRepository $repository){
+        $user=$this->getUser();
+        $em=$this->getDoctrine()->getManager();
+        $userid=$question->getUser();
+
+
+
+        if($user==$question->getUser()){
+            $em->remove($question);
+            $em->flush();
+          return  $this->redirect('/question');
+        }else{
+            return $this->redirect('/question', Response::HTTP_BAD_REQUEST);
+        }
     }
 }

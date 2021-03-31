@@ -19,7 +19,7 @@ class QuestionType extends AbstractType
             ->add('category',EntityType::class, [
                 'class' => Category::class
             ])
-            ->add('user')
+
             ->add('Submit',SubmitType::class)
         ;
     }

@@ -26,8 +26,8 @@
                             <h6 class="card-subtitle mb-2 text-muted">{{ question.user }}</h6>
                             <p class="card-text"> {{ question.askquestion }}</p>
 
-                            <a href="#" class="card-link">Edit</a>
-                            <a href="#" class="card-link text-danger">Delete</a>
+                            <a href="{{ path('questionedit', {'id':question.id}) }}" class="card-link">Edit</a>
+                            <a href="{{ path('questiondelete', {'id':question.id}) }}" class="card-link text-danger">Delete</a>
                             <h5 class="text-primary">reply: </h5>
                             {% for reply in question.reply %}
                                 <p style="margin-left: 20px;">{{ reply.replytext }}</p>

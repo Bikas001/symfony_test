@@ -7,6 +7,7 @@ use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,15 +19,27 @@ class CategoryController extends AbstractController
     /**
      * @Route("/", name="category")
      * @param CategoryRepository $categoryRepository
-     * @return Response
+     * @return JsonResponse
      */
-    public function index(CategoryRepository $categoryRepository): Response
+    public function index(CategoryRepository $categoryRepository,Request $request)
     {
         $categories=$categoryRepository->findAll();
-        dump($categories);
-        return $this->render('category/index.html.twig', [
-            'categories'=>$categories
-        ]);
+        if($request->isXmlHttpRequest() || $request->query->get('showJson') == 1){
+            $jsonData=array();
+            $idx = 0;
+            foreach($categories as $category) {
+                $temp = array(
+                    'name' => $category->getName(),
+                );
+                $jsonData[$idx++] = $temp;
+            }
+            return new JsonResponse($jsonData);
+        }else{
+            return $this->render('category/index.html.twig', [
+                'categories'=>$categories
+            ]);
+        }
+
     }
 
     /**
