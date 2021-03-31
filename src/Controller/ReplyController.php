@@ -39,9 +39,6 @@ class ReplyController extends AbstractController
      * @Route ("/reply/{id}", name="deletereply")
      */
         public function delete(Request $request):Response{
-           return $this->redirect('/');
+           return $this->redirect('/question');
     }
-
-
-
 }

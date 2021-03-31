@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Like;
 use App\Entity\Question;
 use App\Entity\Reply;
 use App\Form\QuestionType;
@@ -9,6 +10,7 @@ use App\Form\ReplyType;
 use App\Repository\QuestionRepository;
 use App\Repository\ReplyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,12 +24,33 @@ class QuestionController extends AbstractController
 
     /**
      * @Route("/", name="question")
+     * @param QuestionRepository $questionRepository
+     * @return Response
      */
-    public function index(QuestionRepository $questionRepository): Response
+    public function index(QuestionRepository $questionRepository,Request $request): Response
     {
+
+
+
+
+        $like=new Like();
+        $form =$this->createFormBuilder()
+            ->getForm();
+
+        $form->handleRequest($request);
+        $em=$this->getDoctrine()->getManager();
+
+        if($form->isSubmitted()){
+            dd($like);
+            $em->persist($like);
+            $em->flush();
+        }
+
+
         $question=$questionRepository->findAll();
         return $this->render('question/index.html.twig', [
-            'questions'=>$question
+            'questions'=>$question,
+            'form'=>$form->createView()
         ]);
     }
 
@@ -41,7 +64,6 @@ class QuestionController extends AbstractController
 
     /**
      * @Route("/create",name="create")
-     * @Route("/{$id}/create", name="create")
      * @param Request $request
      * @return Response
      */
@@ -118,9 +140,7 @@ class QuestionController extends AbstractController
         $reply=new Reply();
         $reply->setQuestion($question);
         $form=$this->createForm(ReplyType::class,$reply);
-
         $em=$this->getDoctrine()->getManager();
-
         $form->handleRequest($request);
         if($form->isSubmitted()){
             $em->persist($reply);

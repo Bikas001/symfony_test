@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Question;
 use App\Entity\User;
+use http\Env\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,17 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class LikeController extends AbstractController
 {
     /**
-     * @Route("/like/{id}", name="like")
+     * @Route("/like/", name="like")
      */
-    public function likes(Question $question):Response{
+    public function likes(Request $request):Response{
 
         $currentuser= $this->getUser();
-
-        if(!$currentuser instanceof User){
-            return "false";
-           // return new Response([],Response::HTTP_UNAUTHORIZED);
-        }
-        $question->addLike($currentuser);
         $this->getDoctrine()->getManager()->flush();
 
     }

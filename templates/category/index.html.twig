@@ -6,6 +6,8 @@
 {% block body %}
     <script>
         $(document).ready(function (){
+
+
             $.ajax({
                 url: '/category',
                 type: 'GET',
@@ -32,7 +34,7 @@
     </script>
 
 
- <div class="container">
+ <div class="container" id="ok">
      <nav aria-label="breadcrumb">
          <ol class="breadcrumb">
              <li class="breadcrumb-item"><a href="/">Home</a></li>
