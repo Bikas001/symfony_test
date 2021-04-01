@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Controller;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Entity\User;
 use App\Form\SignupType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +31,6 @@ class SecurityController extends AbstractController
     {
         $error = $utils->getLastAuthenticationError();
         $lastUsername= $utils->getLastUsername();
-
         return $this->render('security/login.html.twig', [
             'error' =>$error,
             'lastUsername'=>$lastUsername
@@ -66,6 +67,24 @@ class SecurityController extends AbstractController
      */
     public function logout(){
 
+    }
+
+    /**
+     * @Route ("/forget", name="forget")
+     * @param Request $request
+     */
+    public function forgetpassword(Request $request,UserRepository $userRepository){
+
+        $form=$this->createFormBuilder()
+            ->add('oldPassword')
+            ->add('newPassword')
+            ->add('retypePassword')
+            ->add('change',SubmitType::class)
+            ->getForm();
+
+        return $this->render('security/forget.html.twig',[
+            'form'=>$form->createView()
+        ]);
     }
 
 

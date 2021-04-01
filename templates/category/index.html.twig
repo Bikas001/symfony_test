@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CategoryController!{% endblock %}
+{% block title %}Hello Category Controller!{% endblock %}
 
 
 {% block body %}
@@ -14,15 +14,15 @@
                 success: function(data){
 
                     if (!data.error) {
-                        var a;
+                        var a="";
 
                         for (let i = 0; i < data.length; i++) {
                             category = data[i];
-                             a = $('<td class = "s"></td>');
-                            $('.s', a).html(category['name']);
+                            console.log(category.name)
+                            a += category['name'] ;
 
                         }
-                        $('#category').append(a);
+                        $(".category").html(a);
 
 
                     }
@@ -56,7 +56,7 @@
 
     <br>
 
-    <p id="category"></p>
+    <p class="category"></p>
     <div class="container">
         <div class="row">
             <div class="col-sm-12">

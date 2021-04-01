@@ -19,19 +19,20 @@ security:
                 check_path: login
                 provider: my_provider
 #                csrf_token_generator: security.csrf.token_manager
-#                failur_path:
-#                defult_target_path: questionquestion
+                failure_path:  login #for failure redirect
+                default_target_path:  dashboarddashboard  # after logged redirect
+                csrf_token_generator: security.csrf.token_manager
 
             logout:
                 path: /logout
-                target: /
+                target: / #after logged Out redirect
 
 
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-#         - { path: ^/admin, roles: IS_AUTHENICATED_ANONYMOUSLY }
-#         - { path: ^/category, roles: ROLE_USER }
-#         - { path: ^/question, roles: ROLE_USER }
+
+         - { path: ^/admin, roles: IS_AUTHENICATED_ANONYMOUSLY }
+         - { path: ^/dashboard, roles: ROLE_USER }
 

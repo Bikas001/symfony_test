@@ -9,30 +9,31 @@ use App\Form\QuestionType;
 use App\Form\ReplyType;
 use App\Repository\QuestionRepository;
 use App\Repository\ReplyRepository;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Knp\Component\Pager\PaginatorInterface;
+
+
 
 /**
- * @Route("/question", name="question")
+ * @Route("/question", name="question", methods={"GET"})
  */
 class QuestionController extends AbstractController
 {
-
     /**
      * @Route("/", name="question")
      * @param QuestionRepository $questionRepository
+     * @param Request $request
      * @return Response
      */
-    public function index(QuestionRepository $questionRepository,Request $request): Response
+    public function index(QuestionRepository $questionRepository,Request $request,PaginatorInterface $paginator): Response
     {
-
-
-
-
         $like=new Like();
         $form =$this->createFormBuilder()
             ->getForm();
@@ -46,10 +47,46 @@ class QuestionController extends AbstractController
             $em->flush();
         }
 
+        dump($request);
 
-        $question=$questionRepository->findAll();
+
+        $queryBuilder = $this->get('doctrine')->getRepository(Question::class);
+
+        $pagerfanta = new Pagerfanta(
+            new QueryAdapter($queryBuilder)
+        );
+
+//        $offset = max(0, $request->query->getInt('offset', 0));
+//
+//        $paginator = $questionRepository->getQuestionPaginator($offset);
+//
+//
+//
+//        $question=$questionRepository->findAll();
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Get some repository of data, in our case we have an Appointments entity
+        $appointmentsRepository = $em->getRepository(Question::class);
+
+        // Find all the data on the Appointments table, filter your query as you need
+        $allAppointmentsQuery = $appointmentsRepository->createQueryBuilder('p')
+            ->getQuery();
+
+        // Paginate the results of the query
+        $appointments = $paginator->paginate(
+        // Doctrine Query, not results
+            $allAppointmentsQuery,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            3
+        );
+
         return $this->render('question/index.html.twig', [
-            'questions'=>$question,
+            'questions' => $appointments,
+//            'previous' => $offset - QuestionRepository::PAGINATOR_PER_PAGE,
+//            'next' => min(count($paginator), $offset + QuestionRepository::PAGINATOR_PER_PAGE),
             'form'=>$form->createView()
         ]);
     }

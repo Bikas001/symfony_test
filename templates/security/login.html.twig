@@ -20,7 +20,6 @@
    <div class="container">
        <div class="row">
            <div class="col">
-
                <form  method="POST" action="{{ path('login') }}">
                    {% if error %}
                        <div class="error">{{ error.messagekey }}</div>
@@ -35,10 +34,15 @@
                    </div>
 {#                   <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">#}
 {#                   <input type="hidden" name="_target_path" value="{{ app.request.get('redirect-to') }}">#}
+                   <input type="hidden" name="_csrf_token"
+                          value="{{ csrf_token('authenticate') }}"
+                   >
 
-                     <input type="submit" name="Login" value="Login" class="btn btn-primary">
-
+                   <input type="submit" name="Login" value="Login" class="btn btn-primary">   <a  class="btn btn-info" href="{{ path('signup') }}">SignU p</a>
+                   <a class="ml-auto" href="{{ path('app_forgot_password_request') }}">forgot password?</a>
                </form>
+               <br>
+
            </div>
        </div>
    </div>
